@@ -1,0 +1,96 @@
+{% load static %}
+
+<!-- Footer -->
+<section class="pt-4 pb-3" id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-6 col-sm-4 col-lg-2">
+                <div class="title">دسترسی سریع</div>
+                <ul>
+                    <li><a href="{% url 'product:list_product' %}">محصولات</a></li>
+                    <li><a href="{% url 'blog:list_blogs' %}">مقاله ها</a></li>
+                    <li><a href="{% url 'home:fag' %}">سوالات متداول</a></li>
+                    <li><a href="{% url 'account:contactus' %}">درباره ما</a></li>
+                    <li><a href="{% url 'account:message' %}">تماس با ما</a></li>
+
+                </ul>
+            </div>
+            <div class="col-6 col-sm-4 col-lg-2">
+                <div class="title">گروه های محصولات</div>
+                <ul>
+                    {% for cat in cat_product %}
+                        <li><a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a></li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+            {% if request.user.is_authenticated %}
+                <div class="col-6 col-sm-4 col-lg-2 d-none d-sm-inline-block">
+                <div class="title">ناحیه کاربری</div>
+                <ul>
+                    <li><a href="{% url 'account:profile_user' %}">حساب کاربری</a></li>
+                    <li><a href="{% url 'account:user_factors' %}">سفارش های شما</a></li>
+                    <li><a href="{% url 'account:change_password' %}">تغیر رمز عبور</a></li>
+                    <li><a href="{% url 'cart:detail' %}">سبد خرید</a></li>
+                    <li><a href="{% url 'account:fav_detail' %}">علاقه مندی ها</a></li>
+                    <li><a href="{% url 'account:add_address' %}">آدرس ها</a></li>
+
+                </ul>
+            </div>
+                {% else %}
+                <div class="col-6 col-sm-4 col-lg-2 d-none d-sm-inline-block">
+                <div class="title">ورد به سایت</div>
+                <ul>
+                    <li><a href="{% url 'account:login_user' %}">ورد به سایت</a></li>
+                    <li><a href="{% url 'account:register_user' %}">ثبت نام در سایت</a></li>
+                </ul>
+            </div>
+            {% endif %}
+            <div class="col-12 col-md-12 col-lg-6">
+                <hr class="d-lg-none">
+                <img src="{% static 'images/logo.png' %}" alt=""> روبیک مارکت
+                <p>در اینجا، علاوه بر تنوع محصولات بی‌نظیر، تجربه‌ای متفاوت را برای شما ارائه می‌دهیم. با گستره‌ی وسیعی از محصولات مد، الکترونیک، آرایشی و بهداشتی، ورزشی و بسیاری موارد دیگر، می‌توانید به راحتی از خرید آنلاین لذت ببرید.</p>
+                <div class="row">
+                    <div class="col-12 col-md-6 text-center p-2" id="encode43vfbb65gtabfb">
+                        <div>7 روز هفته، 24 ساعت شبانه روز</div>
+                        <div>پاسخگوی شما هستیم</div>
+                        <div>09351234567</div>
+                    </div>
+                    <div class="col-12 col-md-6 pt-2 pt-md-0" id="encode43vfbbbfb">
+                        <div class="row">
+                            <div class="col-4 text-center">
+                                <a href="#"><img src="{% static 'images/encode43vfbbbfb/enamad.html' %}" alt=""></a>
+                            </div>
+                            <div class="col-4 text-center">
+                                <a href="#"><img src="{% static 'images/encode43vfbbbfb/samandehi.html' %}" alt=""></a>
+                            </div>
+                            <div class="col-4 text-center">
+                                <a href="#"><img src="{% static 'images/encode43vfbbbfb/etehadiye.html' %}" alt=""></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /Footer -->
+
+<!-- Copyright -->
+<section class="py-2" id="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-sm-6" id="social-links">
+                <span>ما را دنبال کنید</span>
+                <a href="#"><img src="{% static 'images/social/insta.png' %}" alt=""></a>
+                <a href="#"><img src="{% static 'images/social/facebook.png' %}" alt=""></a>
+                <a href="#"><img src="{% static 'images/social/linkedin.png' %}" alt=""></a>
+                <a href="#"><img src="{% static 'images/social/twitter.png' %}" alt=""></a>
+                <a href="#"><img src="{% static 'images/social/youtube.png' %}" alt=""></a>
+            </div>
+            <div class="col-12 col-sm-6 text-sm-end pt-2 pt-sm-0">
+                <span>کلیه حقوق و مادی معنوی محفوط است.</span>
+            </div>
+        </div>
+    </div>
+</section>

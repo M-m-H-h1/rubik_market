@@ -1,0 +1,63 @@
+{% extends 'bace.html' %}
+{% load static %}
+{% block title %}سوالت متداول{% endblock %}
+{% block content %}
+    <section class="inner-page" id="faq-page">
+        <div class="container-fluid" id="page-hero">
+            <div class="row">
+                <div class="col-12">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 px-0">
+                                <h1>سوالات متداول</h1>
+                                <p>پاسخ به سوالاتی که برای اکثر کاربران پیش می آید.</p>
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="index.html">صفحه نخست</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">سوالات متداول</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="accordion mt-3" id="accordionExample">
+                                    {% for fag in faqs %}
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+                                                {% if forloop.first %}
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="{{ forloop.first }}" aria-controls="collapse{{ forloop.counter }}">
+                                                    {% else %}
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="{{ forloop.first }}" aria-controls="collapse{{ forloop.counter }}">
+                                                {% endif %}
+                                                    {{ fag.question }}
+                                                </button>
+                                            </h2>
+                                            <div id="collapse{{ forloop.counter }}"
+                                                 class="accordion-collapse collapse {% if forloop.first %}show{% endif %}"
+                                                 aria-labelledby="heading{{ forloop.counter }}"
+                                                 data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    <p>{{ fag.answer }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

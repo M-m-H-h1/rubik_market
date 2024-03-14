@@ -1,0 +1,292 @@
+{% extends 'bace.html' %}
+{% load static %}
+{% block title %}ویرایش آدرس{% endblock %}
+{% block content %}
+    <section class="inner-page" id="profile-page">
+        <div class="container-fluid" id="page-hero">
+            <div class="row">
+                <div class="col-12">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 px-0">
+                                <h1>ناحیه کاربری</h1>
+                                <p>به ناحیه کاربری روبیک مارکت خوش آمدید.</p>
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li><a href="{% url 'account:add_address' %}">آدرس های من/</a></li>
+                                        <li><a href="#">ناحیه کاربری</a></li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-12 col-lg-3">
+                                <!-- Side Panel -->
+                                <div class="accordion" id="side-panel">
+                                    <div class="accordion-item menu-container">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button bg-light" type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+                                                    aria-controls="panelsStayOpen-collapseOne">
+                                            <span class="row">
+                                                <span class="col-3 col-sm-2 col-lg-3">
+                                                    {% if request.user.image.image %}
+                                                        <img src="{{ request.user.image.image.url }}"
+                                                             class="rounded-circle">
+                                                    {% else %}
+                                                        <img src="{% static 'images/user-no-image.jpg' %}"
+                                                             class="rounded-circle">
+                                                    {% endif %}
+
+                                                </span>
+                                                <span class="col-7 col-sm-8 col-lg-7 pt-0 pt-sm-2 pt-md-3 pt-lg-0 align-self-center">
+                                                    <div id="full-name">{{ request.user.get_full_name }}</div>
+                                                    <div class="mt-2" id="email-mobile">{{ request.user.email }}</div>
+                                                </span>
+                                            </span>
+                                            </button>
+                                        </h2>
+                                        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
+                                             aria-labelledby="panelsStayOpen-headingOne">
+                                            <div class="accordion-body">
+                                                <ul>
+                                                    <li>
+                                                        <a href="{% url 'account:profile_user' %}"
+                                                           {% if request.resolver_match.url_name == 'profile_user' %}class="active"{% endif %}>
+                                                            <div>
+                                                                <div class="icon d-inline-block"><img
+                                                                        src="{% static 'images/icons/profile-menu/profile.webp' %}"
+                                                                        class="pl-2"></div>
+                                                                اطلاعات حساب
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{% url 'cart:detail' %}"
+                                                           {% if request.resolver_match.url_name == 'detail' %}class="active"{% endif %}>
+                                                            <div>
+                                                                <div class="icon d-inline-block"><img
+                                                                        src="{% static 'images/icons/profile-menu/orders.webp' %}"
+                                                                        class="pl-2"></div>
+                                                                سبد خرید من
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="factors.html">
+                                                            <div>
+                                                                <div class="icon d-inline-block"><img
+                                                                        src="{% static 'images/icons/profile-menu/orders.webp' %}"
+                                                                        class="pl-2"></div>
+                                                                سفارش های من
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="favorites.html">
+                                                            <div>
+                                                                <div class="icon d-inline-block"><img
+                                                                        src="{% static 'images/icons/profile-menu/favorites.webp' %}"
+                                                                        class="pl-2"></div>
+                                                                علاقه مندی ها
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{% url 'account:add_address' %}"
+                                                           {% if request.resolver_match.url_name ==  'add_address' %}class="active"{% endif %}>
+                                                            <div>
+                                                                <div class="icon d-inline-block"><img
+                                                                        src="{% static 'images/icons/profile-menu/addresses.webp' %}"
+                                                                        class="pl-2"></div>
+                                                                آدرس های من
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <hr>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{% url 'account:logout_user' %}">
+                                                            <div>
+                                                                <div class="icon d-inline-block"><img
+                                                                        src="{% static 'images/icons/profile-menu/exit.webp' %}"
+                                                                        class="pl-2"></div>
+                                                                خروج از حساب
+                                                            </div>
+                                                        </a>
+                                                    </li>
+
+                                                </ul>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /Side Panel -->
+                            </div>
+                            <div class="col-12 col-lg-9 pl-lg-0 pr-lg-2 mt-2 mt-lg-0">
+                                <!-- New Address Form -->
+                                <div class="custom-container mb-2" id="new-address">
+                                    <div class="row pt-2 px-3">
+                                        <div class="col-12"><h1>افزودن آدرس جدید</h1></div>
+                                    </div>
+                                    <hr>
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-12 pt-3">
+                                                <form method="post" id="personForm"
+                                                      data-cities-url="{% url 'account:Ajax_load_cities' %}">
+                                                    {% csrf_token %}
+                                                    <div class="row">
+                                                        {% for fild in form %}
+                                                            {% if fild.name == 'address' %}
+                                                                <div class="col-12 col-md-12 pl-2">
+
+                                                                    <div class="form-group m-1">
+                                                                        <label for="postal_code">{{ fild.label }}
+                                                                            :</label>
+
+                                                                        {{ fild }}
+                                                                        <p style="color: #473fe3;margin: 10px">{{ fild.help_text }}.</p>
+                                                                        <div style="color: red">
+                                                                            {% if fild.errors %}
+                                                                                <p>{{ fild.errors }}</p>
+                                                                            {% endif %}
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            {% elif fild.name == 'state' %}
+                                                                <div class="col-12 col-md-6 pl-2">
+
+                                                                    <div class="form-group m-1">
+                                                                        <label for="postal_code">{{ fild.label }}
+                                                                            :</label>
+
+                                                                        {{ fild }}
+                                                                        <p style="color: #473fe3;margin: 10px">{{ fild.help_text }}</p>
+                                                                        <div style="color: red">
+                                                                            {% if fild.errors %}
+                                                                                <p>{{ fild.errors }}</p>
+                                                                            {% endif %}
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+                                                            {% elif fild.name == 'city' %}
+                                                                <div class="col-12 col-md-6 pl-2">
+
+                                                                    <div class="form-group m-1">
+                                                                        <label for="postal_code">{{ fild.label }}
+                                                                            :</label>
+
+                                                                        {{ fild }}
+                                                                        <p style="color: #473fe3;margin: 10px">{{ fild.help_text }}</p>
+                                                                        <div style="color: red">
+                                                                            {% if fild.errors %}
+                                                                                <p>{{ fild.errors }}</p>
+                                                                            {% endif %}
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            {% else %}
+                                                                <div class="col-12 col-md-4 pl-2">
+                                                                    <div class="form-group m-1">
+                                                                        <label for="postal_code">{{ fild.label }}
+                                                                            :</label>
+                                                                        {{ fild }}
+                                                                        <p style="color: #473fe3;margin: 10px">{{ fild.help_text }}</p>
+                                                                        <div style="color: red">
+                                                                            {% if fild.errors %}
+                                                                                <p>{{ fild.errors }}</p>
+                                                                            {% endif %}
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            {% endif %}
+
+                                                        {% endfor %}
+
+
+
+                                                        <div class="col-12">
+                                                            <div class="form-group m-1 pb-3">
+                                                                <button type="submit" class="btn btn-primary px-5">ذخیره
+                                                                    آدرس
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        $("#id_state").change(function () {
+            const url = $("#personForm").attr("data-cities-url");  // get the url of the `load_cities` view
+            const stateId = $(this).val();  // get the selected country ID from the HTML input
+
+            $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+                data: {
+                    'state_id': stateId       // add the country id to the GET parameters
+                },
+                success: function (data) {   // `data` is the return of the `load_cities` view function
+                    $("#id_city").html(data);  // replace the contents of the city input with the data that came from the server
+                }
+            });
+
+        });
+
+        function populateSubCity() {
+            var citySelect = document.getElementById("citySelect");
+            var subCitySelect = document.getElementById("subCitySelect");
+            var selectedCity = citySelect.value;
+
+
+            subCitySelect.innerHTML = "";
+
+
+            if (selectedCity === "تهران") {
+                subCitySelect.add(new Option("شهرک اکباتان", "شهرک اکباتان"));
+                subCitySelect.add(new Option("شهرک غرب", "شهرک غرب"));
+
+            } else if (selectedCity === "مشهد") {
+                subCitySelect.add(new Option("تربت حیدریه", "تربت حیدریه"));
+                subCitySelect.add(new Option("سرخس", "سرخس"));
+                subCitySelect.add(new Option("مشهد", "مشهد"));
+
+            }
+        }
+
+
+    </script>
+{% endblock %}

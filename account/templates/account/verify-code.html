@@ -1,0 +1,78 @@
+{% extends 'bace.html' %}
+{% load static %}
+
+{% block title %}تایید کد فرستاده شده{% endblock %}
+
+{% block content %}
+    <section class="inner-page" id="contact-page">
+        <div class="container-fluid" id="page-hero">
+            <div class="row">
+                <div class="col-12">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 px-0">
+                                <h1>بازیابی رمز عبور</h1>
+                                <p>کدی که به ایمیل شما فرستادیم را وارد کنید</p>
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="index.html">صفحه نخست</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">بازیابی رمز عبور</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container py-2 py-md-5">
+            <div class="row">
+                <div class="col-12 col-sm-10 offset-sm-1">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-12 col-lg-5 text-center">
+                                <img src="{% static 'images/reset-password.png' %}" alt="">
+                            </div>
+                            <div class="col-12 col-lg-7 pt-5 pt-md-0 align-self-center">
+                                <div class="title">بازیابی رمز</div>
+                                <p>برای بازیابی رمز عبور، کدی که به ایمیل شما فرستادیم را وارد کنید.</p>
+                                <form method="post">
+                                    {% csrf_token %}
+                                        <div dir="ltr" class="form-group container-input">
+                                            <div id="inputs" class="inputs">
+                                                <input required name="one" class="input" type="text"
+                                                       inputmode="numeric" maxlength="1"/>
+                                                <input required name="two" class="input" type="text"
+                                                       inputmode="numeric" maxlength="1"/>
+                                                <input required name="three" class="input" type="text"
+                                                       inputmode="numeric" maxlength="1"/>
+                                                <input required name="four" class="input" type="text"
+                                                       inputmode="numeric" maxlength="1"/>
+                                                <input required name="five" class="input" type="text"
+                                                       inputmode="numeric" maxlength="1"/>
+                                            </div>
+                                        </div>
+                                    {% if errors %}
+                                    <div class="form-group">
+                                        <span class="btn btn-outline-danger">{{ errors }}</span>
+                                    </div>
+                                    {% endif %}
+
+
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-success">تایید کد</button>
+                                        <a type="button" href="{% url 'account:password_recovery' %}"
+                                           style="color: #ffc107" class="btn">ارسال دوباره</a>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="{% static 'js/otp_input.js' %}"></script>
+{% endblock %}

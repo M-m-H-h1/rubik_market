@@ -1,0 +1,151 @@
+{% extends 'bace.html' %}
+{% load static %}
+{% load ratings %}
+{% load my_filters %}
+{% block title %}لیست محصولات{% endblock %}
+{% block content %}
+    <section class="inner-page" id="products-page">
+        <div class="container-fluid" id="page-hero">
+            <div class="row">
+                <div class="col-12">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 px-0">
+                                <h1>فروشگاه روبیک مارکت</h1>
+                                <p>هر آنچه نیاز دارید در این فروشگاه موجود است</p>
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class=""><a href="{% url 'home:main' %}"> صفحه نخست /</a></li>
+                                        <li class=""><a href=""> فروشگاه /</a></li>
+                                        <li class=""><a href="{% url 'product:list_product' %}"> لیست محصولات </a></li>
+
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="content">
+                        <div class="row">
+
+                            <div class="col-12 col-lg-12 px-0 pl-lg-0 pr-lg-2 mt-2 mt-lg-0">
+                                <!-- Filters -->
+
+                                <!-- /Filters -->
+                                <div class="mt-2" id="pager">
+                                    <div class="container">
+                                        {% if product %}<p>محصولات<p>{% endif %}
+                                        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 gx-md-4">
+                                            {% for product in product %}
+                                                <div class="col">
+                                                    <!-- Product Box -->
+                                                    <div class="encode4326654321vfb">
+                                                        <a href="{{ product.get_absolute_url }}">
+                                                            <div class="image"
+                                                                 style="background-image: url({{ product.images.first.image.url }})"></div>
+                                                        </a>
+                                                        <div class="details p-3">
+                                                            <div class="category">
+                                                                <a href="products.html">{{ product.category.last }}</a>
+                                                                {% if product.mark %}
+                                                                    &nbsp;/&nbsp;
+                                                                    <a href="products.html">{{ product.mark }}</a>
+                                                                {% endif %}
+                                                            </div>
+                                                            <a href="{{ product.get_absolute_url }}">
+                                                                <h2>{{ product.title }}</h2></a>
+                                                            {% if product.discount_percent %}
+                                                                <div>
+                                                                    <span class="discounted">{{ product.price|price_format }} تومان</span>
+                                                                    <br class="d-sm-none">
+                                                                    <span class="encode4365gbf265g43d">{{ product.Price_after_discount|price_format }} تومان</span>
+                                                                </div>
+                                                            {% else %}
+                                                                <div class="encode4365gbf265g43d">{{ product.price|price_format }}
+                                                                    تومان
+                                                                </div>
+                                                            {% endif %}
+                                                            {% if product.discount_percent %}
+                                                                <div class="badge span_persent fa-1x">{{ product.discount_percent }}%</div>
+                                                            {% endif %}
+                                                            <div class="rate">
+                                                                {% ratings product read_only=True %}
+                                                                <span class="encode43bf265g43d">(14 رای دهنده)</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /Product Box -->
+                                                </div>
+                                            {% empty %}
+
+                                                    <!-- Product Box -->
+
+
+                                                        <h3 onclick="window.location.href = '{% url 'home:main' %}'" class="empty-message">محصولی </h3>
+                                                        <h3 onclick="window.location.href = '{% url 'home:main' %}'" class="empty-message">وجود</h3>
+                                                        <h3 onclick="window.location.href = '{% url 'home:main' %}'" class="empty-message">ندارد!</h3>
+
+
+
+                                            {% endfor %}
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if product.has_other_pages %}
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div id="pagination-bg">
+                                                    <div class="center">
+
+                                                        <div class="paginationn">
+
+                                                            {% if product.has_previous %}
+                                                                <a href="?page={{ product.previous_page_number }}{% if request.GET.s %}&s={{ request.GET.s }}{% endif %}"><i
+                                                                        class="fa fa-angle-double-left"></i></a>
+                                                            {% endif %}
+
+                                                            {% for i in product.paginator.page_range %}
+                                                                {% if product.number == i %}
+                                                                    <a class="active" href="?page={{ i }}{% if request.GET.s %}&s={{ request.GET.s }}{% endif %}">{{ i }}</a>
+                                                                {% else %}
+                                                                    <a href="?page={{ i }}{% if request.GET.s %}&s={{ request.GET.s }}{% endif %}">{{ i }}</a>
+                                                                {% endif %}
+                                                            {% endfor %}
+
+                                                            {% if product.has_next %}
+                                                                <a href="?page={{ product.next_page_number }}{% if request.GET.s %}&s={{ request.GET.s }}{% endif %}"><i
+                                                                        class="fa fa-angle-double-right"
+                                                                        aria-hidden="true"></i></a>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}

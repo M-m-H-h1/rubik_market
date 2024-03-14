@@ -1,0 +1,251 @@
+{% extends 'bace.html' %}
+{% load static %}
+{% load my_filters %}
+{% load my_custom_filters %}
+{% load jalali_tags %}
+{% block title %}{{ request.user.get_full_name }} - پروفایل{% endblock %}
+{% block content %}
+    <style>
+        input#upload {
+        {#background: url('{% static 'images/user-no-image.jpg' %}') 0 0 no-repeat;#}
+        }
+    </style>
+    <section class="inner-page" id="profile-page">
+        <div class="container-fluid" id="page-hero">
+            <div class="row">
+                <div class="col-12">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 px-0">
+                                <h1>ناحیه کاربری</h1>
+                                <p>به ناحیه کاربری روبیک مارکت خوش آمدید.</p>
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class=""><a href="{% url 'home:main' %}">صفحه نخست /</a></li>
+                                        &nbsp
+                                        <li class=""><a href="?"> ویرایش پروفایل</a></li>
+
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-12 col-lg-3">
+                                <!-- Side Panel -->
+                                {% include 'includes/side_panel.html' %}
+                                <!-- /Side Panel -->
+                            </div>
+                            <div class="col-12 col-lg-9 pl-lg-0 pr-lg-2 mt-2 mt-lg-0">
+                                <!-- Profile Fields -->
+                                <div class="custom-container bg-light" id="profile-fields">
+                                    <div class="row pt-2 px-3 ">
+                                        <div class="col-12"><h1>اطلاعات شخصی</h1></div>
+                                    </div>
+                                    <hr>
+
+                                    <form method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="container">
+                                            <div class="row">
+
+                                                {% for field in user_form %}
+                                                    <div class="col-12 col-sm-6 profile-field py-2">
+                                                        <div class="row">
+                                                            <div class="col-10">
+                                                                <div class="title">{{ field.label_tag }}</div>
+                                                                {{ field }}
+                                                                <h5>{{ field.errors }}</h5>
+                                                            </div>
+                                                            <div class="col-2">
+                                                                <a href="#" class="float-left" data-toggle="modal"
+                                                                   data-target="#fullNameModal"><i
+                                                                        class="fa fa-edit"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                                {% for field in profile_form %}
+                                                    <div class="col-12 col-sm-6 profile-field py-2">
+                                                        <div class="row">
+                                                            <div class="col-10">
+                                                                <div class="title">{{ field.label_tag }}</div>
+                                                                {{ field }}
+                                                                {% if request.user.image.image %}
+                                                                    <label class="image" for="upload">تعویض عکس</label>
+                                                                    <span id="file-chosen">
+                                                                    {{ request.user.image.image.name|extract_filename }}</span>
+                                                                    <button onclick="location.reload();" type="button"
+                                                                            class="btn btn-danger"
+                                                                            id="delete-image-btn">حذف عکس
+                                                                    </button>
+                                                                {% else %}
+                                                                    <label class="image" for="upload">انتخاب عکس</label>
+                                                                    <span id="file-chosen">
+                                                                    عکس پروفایلی ندارید</span>
+                                                                {% endif %}
+                                                                <h5>{{ field.errors }}</h5>
+                                                            </div>
+                                                            <div class="col-2">
+                                                                <a href="#" class="float-left" data-toggle="modal"
+                                                                   data-target="#fullNameModal"><i
+                                                                        class="fa fa-edit"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+
+                                                <div class="col-12 col-sm-6 profile-field py-2">
+                                                    <div class="row">
+                                                        <div class="col-10">
+                                                            <div class="title">آخرین ورود :</div>
+                                                            <div class="value">{{ request.user.last_login|jalali_date }}</div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <a href="#" class="float-left" data-toggle="modal"
+                                                               data-target="#emailModal"><i
+                                                                    class="fa fa-user-clock"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-6 profile-field py-2">
+                                                    <div class="row">
+                                                        <div class="col-10">
+                                                            <div class="title">زمان ثبت نام :</div>
+                                                            <div class="value">{{ request.user.date_joined|jalali_date }}</div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <a href="#" class="float-left" data-toggle="modal"
+                                                               data-target="#emailModal"><i class="fa fa-user-edit"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 col-sm-12 py-2">
+                                                    <div class="row">
+                                                        <div class="col-10">
+                                                            <div style="margin: 3% 50% 3% 0%;" class="edit_discription">
+                                                                <button type="submit"
+                                                                        class="btn btn-outline-primary">
+                                                                    ویرایش اطلاعات
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+                                <!-- /Profile Fields -->
+
+                                <!-- Latest Orders -->
+                                <div class="mt-2 order">
+                                    <div class="row pt-2 px-3">
+                                        <div class="col-12"><h2>آخرین سفارش شما</h2></div>
+                                    </div>
+                                </div>
+                                <div class="custom-container mt-2 order">
+                                    <a href="{% url 'cart:order_detail' last_order_user.id %}">
+                                        <div class="row pt-2 px-3">
+                                            <div class="col-12 col-sm-6"><h2>سفارش شماره #{{ last_order_user.id }}</h2>
+                                            </div>
+                                            <div class="col-12 col-sm-6 text-sm-end">
+                                                <span>{{ last_order_user.created_at|jalali_date }}</span> -
+                                                <span>{% if last_order_user.is_paid == True %}پرداخت شده{% else %}در انتظار
+                                                    پرداخت{% endif %}</span></div>
+
+                                        </div>
+                                    </a>
+                                    <hr>
+                                    <div class="container">
+                                        <div class="row py-2">
+                                            <div class="col-12">
+                                                <div>
+                                                    <div class="header">
+                                                        {% if not last_order_user.total_discount_code %}
+                                                            <div class="total py-1"><span>مبلغ کل:</span> {% if last_order_user.total_price_af_dis %}{{ last_order_user.total_price_af_dis|intcomma }}{% else %}{{ last_order_user.total_price|intcomma }}{% endif %}
+                                                                تومان
+                                                            </div>
+                                                            {% else %}
+                                                            <div class="total py-1"><span>مبلغ کل:</span> {% if last_order_user.total_price_af_dis %}{{ last_order_user.total_price_af_dis|intcomma }}{% else %}{{ last_order_user.total_price|intcomma }}{% endif %}
+                                                                تومان با احتساب کد تخفیف
+                                                            </div>
+                                                        {% endif %}
+                                                        </div>
+                                                    <div class="container products px-0">
+                                                        <div class="row">
+                                                                {% for product in last_order_user.items.all %}
+                                                                    <span class="col-12 col-sm-6 col-lg-4 col-xl-3 px-1">
+                                                            <a href="{{ product.product.get_absolute_url }}"
+                                                               target="_blank">
+                                                                <div class="encode4326654321vfb">
+                                                                    <div class="image"
+                                                                         style="background-image: url('{{ product.product.images.first.image.url }}')"></div>
+                                                                    <div class="text-center px-1 px-sm-3">
+                                                                        <h2>{{ product.product.short_title }}</h2>
+                                                                        <div class="number">تعداد: {{ product.quantity }} عدد</div>
+
+                                                                        <div class="encode4365gbf265g43d">مبلغ کل: {{ product.final_price|price_format }}</div>
+                                                                        {% if product.product.discount_percent %}
+                                                                            <p class="encode4365gbf265g43d">مبلغ اصلی: {{ product.product.Price_after_discount|price_format }}</p>
+                                                                        {% else %}
+                                                                            <p class="encode4365gbf265g43d">مبلغ اصلی: {{ product.product.price|price_format }}</p>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </span>
+                                                                {% endfor %}
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Latest Orders -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#delete-image-btn").click(function () {
+                fetch('/account/delete-profile-image/', {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": '{{ csrf_token }}',
+                    },
+                    body: JSON.stringify({}),
+
+                })
+                location.reload()
+
+
+            });
+        });
+
+        const actualBtn = document.getElementById('upload');
+
+        const fileChosen = document.getElementById('file-chosen');
+
+        actualBtn.addEventListener('change', function () {
+            fileChosen.textContent = this.files[0].name
+        })
+    </script>
+{% endblock %}

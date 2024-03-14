@@ -1,0 +1,61 @@
+{% load static %}
+<body>
+<!-- Header -->
+<section id="header">
+    <!-- Top NavBar -->
+    <div id="encode4325436">
+        <div class="container">
+            <div class="row">
+                <div class="col-8 d-none d-md-block">
+                    <ul>
+                        <li><a href="{% url 'home:main' %}">صفحه نخست</a></li>
+                        <li><a href="{% url 'account:contactus' %}">درباره ما</a></li>
+                        <li><a href="{% url 'account:message' %}">تماس با ما</a></li>
+                    </ul>
+                </div>
+                <div class="col-12 col-md-4 text-center text-md-end" id="top-encode43vfbb65gtabfb">
+                    <span>تلفن مشاوره و فروش: 09351234567</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Top NavBar -->
+    <!-- Search NavBar -->
+    <div id="encode43254bvfb">
+        <div class="container pt-1">
+            <div class="row py-3 align-content-center">
+                <div class="col-12 col-md-3 col-xl-2 text-center text-md-start pb-2" id="encode4326523bvfb">
+
+                    <a href="{% url 'home:main' %}">
+                        <img src="{% static 'images/logo.png' %}" alt=""> روبیک مارکت
+                    </a>
+                </div>
+                <div class="col-12 col-md-5 col-xl-6">
+                    <div id="search-bar">
+                        <form action="{% url 'product:search' %}">
+                            <i class="fa fa-search"></i>
+                        <input name="s" {% if request.GET.s %}value="{{ request.GET.s }}"{% endif %} type="text" placeholder="جستجو در محصولات...">
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-4">
+                    <div class="row">
+                        {% if request.user.is_anonymous %}
+                            <div class="col-12 col-md-7 col-lg-6 text-center" id="btn-login-register">
+                                <a href="{% url 'account:login_user' %}">ورود</a> /
+                                <a href="{% url 'account:register_user' %}">عضویت</a>
+                            </div>
+                        {% endif %}
+                        <div class="col-12 col-md-5 col-lg-6">
+                            <a href="{% url 'cart:detail' %}">
+                                <div class="btn btn-warning w-100"><i class="fa fa-shopping-cart"></i>&nbsp;<span
+                                        class="d-md-none d-lg-inline-block">سبد خرید</span> ({% if request.session.cart %}{{ request.session.cart|length }}){% else %}خالی){% endif %}
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

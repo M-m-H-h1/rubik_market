@@ -1,0 +1,324 @@
+{% extends 'bace.html' %}
+{% load static %}
+{% load my_filters %}
+{% load ratings %}
+{% block title %}سفارش های شما{% endblock %}
+{% load my_custom_filters %}
+{% block content %}
+    <section class="inner-page" id="profile-page">
+        <div class="container-fluid" id="page-hero">
+            <div class="row">
+                <div class="col-12">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 px-0">
+                                <h1>ناحیه کاربری</h1>
+                                <p>به ناحیه کاربری روبیک مارکت خوش آمدید.</p>
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li><a href="{% url 'home:main' %}">صفحه نخست</a></li>
+                                        /
+                                        <li><a href="{% url 'account:profile_user' %}">حساب کاربری</a></li>
+                                        /
+                                        <li><a href="{% url 'account:user_factors' %}">سفارش ها</a></li>
+
+
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-12 col-lg-3">
+                                <!-- Side Panel -->
+                                {% include 'includes/side_panel.html' %}
+                                <!-- /Side Panel -->
+                            </div>
+                            <div class="col-12 col-lg-9 pl-lg-0 pr-lg-2 mt-2 mt-lg-0">
+                                <!-- Factors Count -->
+                                <div class="custom-container" id="orders-status">
+                                    <div class="container nowrap">
+                                        <div class="row py-2">
+                                            <div class="col-12 px-0">
+                                                <ul class="px-3">
+                                                    <li>
+                                                        <a class="btn featured-categories" data-val="all">
+                                                            <span>تمام سفارش ها</span>
+                                                            <div class="badge badge-secondary">{{ order_count }}</div>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="btn featured-categories" data-val="Awaiting">
+                                                            <span>در انتظار پرداخت</span>
+                                                            <div class="badge badge-secondary">{{ dont_paid_order.count }}</div>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="btn featured-categories" data-val="paid">
+                                                            <span>پرداخت شده</span>
+                                                            <div class="badge badge-secondary">{{ paid_order.count }}</div>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% for order in orders %}
+                                    <div id="order-list" class="custom-container mt-2 order featured-product all">
+                                        <a href="{% url 'cart:order_detail' order.id %}">
+
+                                            <div class="row pt-2 px-3">
+                                                <div class="col-12 col-sm-6"><h2>سفارش شماره #{{ order.id }}</h2></div>
+                                                <div class="col-12 col-sm-6 text-sm-end">
+                                                    <span>{{ order.created_at|jalali_date }}</span> -
+                                                    <span>{% if order.is_paid == True %}پرداخت شده{% else %}در انتظار
+                                                        پرداخت{% endif %}</span></div>
+                                            </div>
+
+
+                                        </a>
+                                        <hr>
+                                        <div class="container">
+                                            <div class="row py-2">
+                                                <div class="col-12">
+                                                    <div style="" class="center">
+                                                        <a href="{% url 'account:factor_delete' order.id %}"
+                                                           class="btn btn-outline-danger btn-cancel-compare ">
+                                                            <i class="fas fa-times"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div>
+
+                                                        <div class="header">
+                                                            {% if not order.total_discount_code %}
+                                                                <div class="total py-1"><span>مبلغ کل:</span>
+                                                                    {% if order.total_price_af_dis %}
+                                                                        {{ order.total_price_af_dis|intcomma }}{% else %}
+                                                                        {{ order.total_price|intcomma }}{% endif %}
+                                                                    تومان
+                                                                </div>
+                                                            {% else %}
+                                                                <div class="total py-1"><span>مبلغ کل:</span>
+                                                                    {% if order.total_price_af_dis %}
+                                                                        {{ order.total_price_af_dis|intcomma }}{% else %}
+                                                                        {{ order.total_price|intcomma }}{% endif %}
+                                                                    تومان با احتساب کد تخفیف
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class="container products px-0">
+
+                                                            <div class="row">
+
+                                                                {% for product in order.items.all %}
+                                                                    <span class="col-12 col-sm-6 col-lg-4 col-xl-3 px-1">
+                                                            <a href="{{ product.product.get_absolute_url }}"
+                                                               target="_blank">
+                                                                <div class="encode4326654321vfb">
+                                                                    <div class="image"
+                                                                         style="background-image: url('{{ product.product.images.first.image.url }}')"></div>
+                                                                    <div class="text-center px-1 px-sm-3">
+                                                                        <h2>{{ product.product.short_title }}</h2>
+                                                                        <div class="number">تعداد: {{ product.quantity }} عدد</div>
+
+                                                                        <div class="encode4365gbf265g43d">مبلغ کل: {{ product.final_price|price_format }}</div>
+                                                                        {% if product.product.discount_percent %}
+                                                                            <p class="encode4365gbf265g43d">مبلغ اصلی: {{ product.product.Price_after_discount|price_format }}</p>
+                                                                        {% else %}
+                                                                            <p class="encode4365gbf265g43d">مبلغ اصلی: {{ product.product.price|price_format }}</p>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </span>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                                <div class="featured-product all">
+                                    {% if orders.has_other_pages %}
+                                        <div style="padding: 15px" class="center">
+
+                                            <div class="paginationn">
+
+                                                {% if orders.has_previous %}
+                                                    <a href="?page={{ orders.previous_page_number }}"><i
+                                                            class="fa fa-angle-double-left"></i></a>
+                                                {% endif %}
+
+                                                {% for i in orders.paginator.page_range %}
+                                                    {% if orders.number == i %}
+                                                        <a class="active" href="?page={{ i }}">{{ i }}</a>
+                                                    {% else %}
+                                                        <a href="?page={{ i }}">{{ i }}</a>
+                                                    {% endif %}
+                                                {% endfor %}
+
+                                                {% if orders.has_next %}
+                                                    <a href="?page={{ orders.next_page_number }}"><i
+                                                            class="fa fa-angle-double-right"
+                                                            aria-hidden="true"></i></a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                {% for order in dont_paid_order %}
+                                    <div class="custom-container mt-2 order featured-product Awaiting ">
+                                        <a href="{% url 'cart:order_detail' order.id %}">
+                                            <div class="row pt-2 px-3">
+                                                <div class="col-12 col-sm-6"><h2>سفارش شماره #{{ order.id }}</h2></div>
+                                                <div class="col-12 col-sm-6 text-sm-end">
+                                                    <span>{{ order.created_at|jalali_date }}</span> -
+                                                    <span>{% if order.is_paid == True %}پرداخت شده{% else %}در انتظار
+                                                        پرداخت{% endif %}</span></div>
+                                            </div>
+                                        </a>
+                                        <hr>
+                                        <div class="container">
+                                            <div class="row py-2">
+                                                <div class="col-12">
+                                                    <div style="" class="center">
+                                                        <a href="{% url 'account:factor_delete' order.id %}"
+                                                           class="btn btn-outline-danger btn-cancel-compare ">
+                                                            <i class="fas fa-times"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div>
+
+
+                                                        <div class="header">
+                                                            <div class="total py-1"><span>مبلغ کل:</span>
+                                                                {% if order.total_price_af_dis %}
+                                                                    {{ order.total_price_af_dis|intcomma }}{% else %}
+                                                                    {{ order.total_price|intcomma }}{% endif %}
+                                                                تومان
+                                                            </div>
+                                                        </div>
+                                                        <div class="container products px-0">
+                                                            <div class="row">
+                                                                {% for product in order.items.all %}
+                                                                    <span class="col-12 col-sm-6 col-lg-4 col-xl-3 px-1">
+                                                            <a href="{{ product.product.get_absolute_url }}"
+                                                               target="_blank">
+                                                                <div class="encode4326654321vfb">
+                                                                    <div class="image"
+                                                                         style="background-image: url('{{ product.product.images.first.image.url }}')"></div>
+                                                                    <div class="text-center px-1 px-sm-3">
+                                                                        <h2>{{ product.product.short_title }}</h2>
+                                                                        <div class="number">تعداد: {{ product.quantity }} عدد</div>
+
+                                                                        <div class="encode4365gbf265g43d">مبلغ کل: {{ product.final_price|price_format }}</div>
+                                                                        {% if product.product.discount_percent %}
+                                                                            <p class="encode4365gbf265g43d">مبلغ اصلی: {{ product.product.Price_after_discount|price_format }}</p>
+                                                                        {% else %}
+                                                                            <p class="encode4365gbf265g43d">مبلغ اصلی: {{ product.product.price|price_format }}</p>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </span>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+                                {% endfor %}
+                                {% for order in paid_order %}
+                                    <div id="content"
+                                         class="single_content custom-container mt-2 order featured-product paid ">
+                                        <a href="{% url 'cart:order_detail' order.id %}">
+                                            <div class="row pt-2 px-3">
+                                                <div class="col-12 col-sm-6"><h2>سفارش شماره #{{ order.id }}</h2></div>
+                                                <div class="col-12 col-sm-6 text-sm-end">
+                                                    <span>{{ order.get_jalali_date_for_show }}</span> -
+                                                    <span>{% if order.is_paid == True %}پرداخت شده{% else %}در انتظار
+                                                        پرداخت{% endif %}</span></div>
+                                            </div>
+                                        </a>
+                                        <hr>
+                                        <div class="container">
+                                            <div class="row py-2">
+                                                <div class="col-12">
+                                                    <div style="" class="center">
+                                                        <a href="{% url 'account:factor_delete' order.id %}"
+                                                           class="btn btn-outline-danger btn-cancel-compare ">
+                                                            <i class="fas fa-times"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div>
+                                                        <div class="header">
+                                                            <div class="total py-1"><span>مبلغ کل:</span>
+                                                                {% if order.total_price_af_dis %}
+                                                                    {{ order.total_price_af_dis|intcomma }}{% else %}
+                                                                    {{ order.total_price|intcomma }}{% endif %}
+                                                                تومان
+                                                            </div>
+                                                        </div>
+                                                        <div class="container products px-0">
+                                                            <div class="row">
+                                                                {% for product in order.items.all %}
+                                                                    <span class="col-12 col-sm-6 col-lg-4 col-xl-3 px-1">
+                                                            <a href="{{ product.product.get_absolute_url }}"
+                                                               target="_blank">
+                                                                <div class="encode4326654321vfb">
+                                                                    <div class="image"
+                                                                         style="background-image: url('{{ product.product.images.first.image.url }}')"></div>
+                                                                    <div class="text-center px-1 px-sm-3">
+                                                                        <h2>{{ product.product.short_title }}</h2>
+                                                                        <div class="number">تعداد: {{ product.quantity }} عدد</div>
+
+                                                                        <div class="encode4365gbf265g43d">مبلغ کل: {{ product.final_price|price_format }}</div>
+                                                                        {% if product.product.discount_percent %}
+                                                                            <p class="encode4365gbf265g43d">مبلغ اصلی: {{ product.product.Price_after_discount|price_format }}</p>
+                                                                        {% else %}
+                                                                            <p class="encode4365gbf265g43d">مبلغ اصلی: {{ product.product.price|price_format }}</p>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </span>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+{% endblock %}

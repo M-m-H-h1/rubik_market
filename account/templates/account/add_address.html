@@ -1,0 +1,234 @@
+{% extends 'bace.html' %}
+{% load static %}
+{% block title %}اضافه کردن آدرس{% endblock %}
+{% block content %}
+    <section class="inner-page" id="profile-page">
+        <div class="container-fluid" id="page-hero">
+            <div class="row">
+                <div class="col-12">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 px-0">
+                                <h1>ناحیه کاربری</h1>
+                                <p>به ناحیه کاربری روبیک مارکت خوش آمدید.</p>
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li><a href="{% url 'account:profile_user' %}">ناحیه کاربری / </a></li>
+                                        <li><a href="{% url 'account:add_address' %}">آدرس های من</a></li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-12 col-lg-3">
+                                <!-- Side Panel -->
+                                {% include 'includes/side_panel.html' %}
+                                <!-- /Side Panel -->
+                            </div>
+                            <div class="col-12 col-lg-9 pl-lg-0 pr-lg-2 mt-2 mt-lg-0">
+                                <!-- New Address Form -->
+                                <div class="custom-container mb-2" id="new-address">
+                                    <div class="row pt-2 px-3">
+                                        <div class="col-12"><h1>افزودن آدرس جدید</h1></div>
+                                    </div>
+                                    <hr>
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-12 pt-3">
+                                                <form method="post" id="personForm"
+                                                      data-cities-url="{% url 'account:Ajax_load_cities' %}">
+                                                    {% csrf_token %}
+                                                    <div class="row">
+                                                        {% for fild in form %}
+                                                            {% if fild.name == 'address' %}
+                                                                <div class="col-12 col-md-12 pl-2">
+
+                                                                    <div class="form-group m-1">
+                                                                        <label for="postal_code">{{ fild.label }}
+                                                                            :</label>
+
+                                                                        {{ fild }}
+                                                                        <p style="color: #473fe3;margin: 10px">{{ fild.help_text }}.</p>
+                                                                        <div style="color: red">
+                                                                            {% if fild.errors %}
+                                                                                <p>{{ fild.errors }}</p>
+                                                                            {% endif %}
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+                                                            {% elif fild.name == 'state' %}
+                                                                <div class="col-12 col-md-6 pl-2">
+
+                                                                    <div class="form-group m-1">
+                                                                        <label for="postal_code">{{ fild.label }}
+                                                                            :</label>
+
+                                                                        {{ fild }}
+                                                                        <p style="color: #473fe3;margin: 10px">{{ fild.help_text }}</p>
+                                                                        <div style="color: red">
+                                                                            {% if fild.errors %}
+                                                                                <p>{{ fild.errors }}</p>
+                                                                            {% endif %}
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+                                                            {% elif fild.name == 'city' %}
+                                                                <div class="col-12 col-md-6 pl-2">
+
+                                                                    <div class="form-group m-1">
+                                                                        <label for="postal_code">{{ fild.label }}
+                                                                            :</label>
+
+                                                                        {{ fild }}
+                                                                        <p style="color: #473fe3;margin: 10px">{{ fild.help_text }}</p>
+                                                                        <div style="color: red">
+                                                                            {% if fild.errors %}
+                                                                                <p>{{ fild.errors }}</p>
+                                                                            {% endif %}
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+                                                            {% else %}
+                                                                <div class="col-12 col-md-4 pl-2">
+                                                                    <div class="form-group m-1">
+                                                                        <label for="postal_code">{{ fild.label }}
+                                                                            :</label>
+                                                                        {{ fild }}
+                                                                        <p style="color: #473fe3;margin: 10px">{{ fild.help_text }}</p>
+                                                                        <div style="color: red">
+                                                                            {% if fild.errors %}
+                                                                                <p>{{ fild.errors }}</p>
+                                                                            {% endif %}
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            {% endif %}
+
+                                                        {% endfor %}
+
+
+
+                                                        <div class="col-12">
+                                                            <div class="form-group m-1 pb-3">
+                                                                <button type="submit" class="btn btn-primary px-5">ذخیره
+                                                                    آدرس
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /New Address Form -->
+
+                                <!-- User Addresses -->
+                                {% if request.user.addresses.all %}
+                                    <div class="custom-container" id="addresses">
+                                        <div class="row pt-2 px-3">
+                                            <div class="col-12"><h1>آدرس های من</h1></div>
+                                        </div>
+                                        <hr>
+                                        <div class="container">
+                                            <div class="row">
+                                                {% for addr in request.user.addresses.all %}
+                                                    <div class="col-12 address py-2">
+                                                        <div class="row">
+                                                            <div class="col-12 col-sm-10">
+                                                                <div class="title">{{ addr.state }}
+                                                                    ، {{ addr.city }} <span
+                                                                            style="color: #09775b">{% if addr.default == True %}
+                                                                        ( آدرس پیش فرض شما ){% endif %} </span></div>
+                                                                <div class="sub-title">{{ addr.address }}</div>
+                                                                <div class="sub-title">{{ addr.fullname }}</div>
+                                                                <div class="sub-title">{{ addr.phone }}</div>
+
+                                                            </div>
+                                                            <div class="col-12 col-sm-2 text-lg-end">
+
+                                                                <a title="حذف آدرس" onclick="delete_address({{ addr.id }})"
+                                                                   id="delete-addr"
+                                                                   class="float-right float-sm-left pr-2 pl-sm-2"><i
+                                                                        class="fa fa-trash-alt font-weight-normal"></i></a>
+
+                                                                <a title="ویرایش آدرس" href="{% url 'account:edit_address' addr.id %}"
+                                                                   class="float-right float-sm-left"><i
+                                                                        class="fa fa-edit font-weight-normal"></i></a>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="custom-container" id="addresses">
+                                        <div class="row pt-2 px-3">
+                                            <div class="col-12"><h1>شما آدرسی ندارید !</h1></div>
+                                        </div>
+                                        <hr>
+
+                                    </div>
+                                {% endif %}
+                                <!-- /User Addresses -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        $("#id_state").change(function () {
+            const url = $("#personForm").attr("data-cities-url");  // get the url of the `load_cities` view
+            const stateId = $(this).val();  // get the selected country ID from the HTML input
+
+            $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+                data: {
+                    'state_id': stateId       // add the country id to the GET parameters
+                },
+                success: function (data) {   // `data` is the return of the `load_cities` view function
+                    $("#id_city").html(data);  // replace the contents of the city input with the data that came from the server
+                }
+            });
+
+        });
+
+        function delete_address(id) {
+            var url = `http://127.0.0.1:8000/account/delete-address/${id}`
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": '{{ csrf_token }}',
+                },
+                body: JSON.stringify({}),
+            })
+            location.reload();
+
+        }
+
+    </script>
+{% endblock %}

@@ -1,0 +1,156 @@
+{% extends 'bace.html' %}
+{% load static %}
+{% load ratings %}
+{% block title %}محصولات مورد علاقه شما {% endblock %}
+{% block content %}
+    <section class="inner-page" id="profile-page">
+        <div class="container-fluid" id="page-hero">
+            <div class="row">
+                <div class="col-12">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 px-0">
+                                <h1>ناحیه کاربری</h1>
+                                <p>به ناحیه کاربری روبیک مارکت خوش آمدید.</p>
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="../index.html">صفحه نخست</a></li>
+                                        <li class="breadcrumb-item"><a href="#">ناحیه کاربری</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">محصولات مورد علاقه</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-12 col-lg-3">
+                                <!-- Side Panel -->
+                                {% if request.user.is_authenticated %}
+                                    {% include 'includes/side_panel.html' %}
+
+                                {% else %}
+                                    <div class="accordion" id="side-panel">
+                                        <div class="accordion-item menu-container">
+
+                                            <div id="panelsStayOpen-collapseOne"
+                                                 class="accordion-collapse collapse show"
+                                                 aria-labelledby="panelsStayOpen-headingOne">
+                                                <div class="accordion-body">
+                                                    <ul>
+                                                        <li>
+                                                            <a href="{% url 'account:login_user' %}">
+                                                                <div>
+                                                                    <div class="icon d-inline-block"><img
+                                                                            src="{% static 'images/icons/profile-menu/profile.webp' %}"
+                                                                            class="pl-2"></div>
+                                                                    ورود به حساب
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                        <hr>
+                                                        <li>
+                                                            <a href="{% url 'account:register_user' %}">
+                                                                <div>
+                                                                    <div class="icon d-inline-block"><img
+                                                                            src="{% static 'images/icons/profile-menu/profile.webp' %}"
+                                                                            class="pl-2"></div>
+                                                                    ساختن یه حساب
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                            </div>
+                            <div class="col-12 col-lg-9 pl-lg-0 pr-lg-2 mt-2 mt-lg-0">
+                            {% if fav.fav %}
+                                <div class="custom-container" id="favorites">
+                                    <div class="row pt-2 px-3">
+                                        <div class="col-12"><h1>محصولات مورد علاقه</h1></div>
+                                    </div>
+                                    <div class="container">
+                                        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 gx-md-4">
+
+                                                {% for item in fav %}
+                                                <div class="col ">
+                                                    <!-- Product Box -->
+                                                    <div class="text-center">
+                                                        <a href="{% url 'account:fav_delete' item.id %}" class="btn btn-sm btn-outline-danger btn-cancel-compare float-left ">
+                                                            X
+                                                        </a>
+                                                    </div>
+                                                    <div class="encode4326654321vfb">
+                                                        <a href="{{ item.product.get_absolute_url }}">
+                                                            <div class="image"
+                                                                 style="background-image: url('{{ item.product.images.first.image.url }}')"></div>
+                                                        </a>
+                                                        <div class="details p-3">
+                                                            <div class="category">
+                                                                <a href="{{ item.product.category.last.get_absolute_url }}">{{ item.product.category.last }}</a>
+                                                                {% if item.product.mark %}
+                                                                    &nbsp;/&nbsp;
+                                                                    <a href="{{ item.product.mark.get_absolute_url }}">{{ item.product.mark }}</a>
+                                                                {% endif %}
+                                                            </div>
+                                                            <a href="{{ item.product.get_absolute_url }}">
+                                                                <h2>{{ item.product.title }}</h2></a>
+                                                            {% if item.product.discount_percent %}
+                                                                <div>
+                                                                    <span class="discounted">{{ item.product.price }} تومان</span>
+                                                                    <br class="d-sm-none">
+                                                                    <span class="encode4365gbf265g43d">{{ item.product.Price_after_discount }} تومان</span>
+                                                                </div>
+                                                            {% else %}
+                                                                <div class="encode4365gbf265g43d">{{ item.product.price }}
+                                                                    تومان
+                                                                </div>
+                                                            {% endif %}
+
+                                                            {% if item.product.discount_percent %}
+                                                                <div class="badge span_persent fa-1x">{{ item.product.discount_percent }}%</div>
+                                                            {% endif %}
+                                                            <div class="rate">
+                                                                {% ratings item.product read_only=True %}
+                                                                <span class="encode43bf265g43d">(14 رای دهنده)</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /Product Box -->
+                                                </div>
+                                            {% endfor %}
+
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="custom-container" id="favorites">
+                                    <div class="text-center row pt-2 px-3">
+                                        <div class="col-12"><h1>هنوز هیچ محصولی رو انتخاب نکرده اید !</h1></div>
+                                    </div>
+                                    <div class="col-12 text-center">
+                                        <a href="{% url 'product:list_product' %}" class="btn btn-outline-success">محصولات</a>
+                                    </div>
+
+                                </div>
+                            {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,193 @@
+{% extends 'bace.html' %}
+{% load static %}
+{% load my_custom_filters %}
+{% load my_filters %}
+{% block title %}مقاله ها{% endblock %}
+{% block content %}
+    <section class="inner-page" id="blog-page">
+    <div class="container-fluid" id="page-hero">
+        <div class="row">
+            <div class="col-12">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 px-0">
+                            <h1>بلاگ</h1>
+                            <p>بلاگ آموزشی روبیک مارکت</p>
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="index.html">صفحه نخست</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">بلاگ آموزشی</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="content">
+                    <div class="row">
+                        <div class="col-12 col-lg-9">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="blog-container">
+                                        <div class="row py-2 px-3">
+                                            <div class="col"><h1 class="title">مرکز آموزش روبیک مارکت</h1></div>
+                                        </div>
+                                        <div class="container px-2 pb-3">
+                                            <div class="row row-cols-1 row-cols-md-2">
+                                                {% for blog in object_list %}
+                                                <div class="col">
+                                                    <div class="encode43bdsf23da" data-aos="fade-up" data-aos-duration="1000">
+                                                        <a href="{{ blog.get_absolute_url }}"><div class="post-image" style="background-image: url('{{ blog.image.url }}')"></div></a>
+                                                        <div class="details py-3 px-4">
+                                                            <div class="post-date">{{ blog.created|strf_time:'ارسال شده در %d %B %Y در ساعت %H' }}</div>
+                                                            <a href="{{ blog.get_absolute_url }}">
+                                                                <h2 class="post-title">{{ blog.title }}</h2>
+                                                            </a>
+                                                            <a href="{{ blog.get_absolute_url }}">
+                                                                <div class="encode43bbfb">{{ blog.short_body }}</div>
+                                                            </a>
+                                                            <div class="read-more"><a href="{{ blog.get_absolute_url }}" class="hvr-icon-back">بیشتر خوانید <i class="fa fa-arrow-left hvr-icon"></i></a></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12">
+                                    <div class="encode43bdsf23da" data-aos="fade-up" data-aos-duration="1000">
+                                        <div id="pagination-bg">
+                                            <div class="center">
+
+                                                <div class="paginationn">
+
+                                                    {% if page_obj.has_previous %}
+                                                        <a href="?page={{ page_obj.previous_page_number }}"><i
+                                                                class="fa fa-angle-double-left"></i></a>
+                                                    {% endif %}
+
+                                                    {% for i in paginator.page_range %}
+                                                        {% if page_obj.number == i %}
+                                                            <a class="active" href="?page={{ i }}">{{ i }}</a>
+                                                        {% else %}
+                                                            <a href="?page={{ i }}">{{ i }}</a>
+                                                        {% endif %}
+                                                    {% endfor %}
+
+                                                    {% if page_obj.has_next %}
+                                                        <a href="?page={{ page_obj.next_page_number }}"><i
+                                                                class="fa fa-angle-double-right"
+                                                                aria-hidden="true"></i></a>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                        <div class="col-12 col-lg-3">
+                            <div class="row">
+
+                                <!-- Side Panel -->
+                                <div class="col-12 col-sm-6 col-lg-12 px-lg-2">
+                                    <div class="blog-side-panel">
+                                        <div class="row pt-2 px-3">
+                                            <div class="col"><div class="title">پربازدیدترین محصولات</div></div>
+                                        </div>
+                                        <hr>
+                                        <div class="container">
+                                            <div class="row">
+                                                {% for product in products|order_bya:'-views'|slice:'4' %}
+                                                <div class="col-12 col-lg-12 px-0 mt-2">
+                                                    <a href="{{ product.get_absolute_url }}">
+                                                        <div class="side-blog-product">
+                                                            <div class="row pl-3">
+                                                                <div class="col-4 pl-2">
+                                                                    <div class="image" style="background-image: url('{{ product.images.first.image.url }}')"></div>
+                                                                </div>
+                                                                <div class="col-8 px-0">
+                                                                    <h2>{{ product.title }}</h2>
+                                                                    <div class="row">
+                                                                        <div class="col-8 pl-0">
+                                                                            {% if product.discount_percent %}
+                                                                            <span class="encode4365gbf265g43d">{{ product.Price_after_discount|price_format }} تومان</span>
+                                                                                {% else %}
+                                                                            <span class="encode4365gbf265g43d">{{ product.price|price_format }} تومان</span>
+                                                                            {% endif %}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                {% endfor %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-12 px-lg-2">
+                                    <div class="blog-side-panel">
+                                        <div class="row pt-4 pt-sm-2 px-3">
+                                            <div class="col"><div class="title">پربازدیدترین مطالب</div></div>
+                                        </div>
+                                        <hr>
+                                        <div class="container">
+                                            <div class="row">
+                                                {% for blog in blogs|order_bya:'-views'|slice:'4' %}
+                                                <div class="col-12 col-lg-12 px-0 mt-2">
+                                                    <div class="side-blog-post">
+                                                        <div class="row pl-3">
+                                                            <div class="col-4 pl-2">
+                                                                <a href="{{ blog.get_absolute_url }}"><div class="image" style="background-image: url('{{ blog.image.url }}')"></div></a>
+                                                            </div>
+                                                            <div class="col-8 px-0">
+                                                                <a href="{{ blog.get_absolute_url }}"><h2>{{ blog.title }}</h2></a>
+                                                                <div class="row">
+                                                                    <div class="col-12 col-xl-6 pl-0">
+                                                                        <span class="category">دسته بندی: <a href="blog.html">اخبار</a></span>
+                                                                    </div>
+                                                                    <div class="col-12 col-xl-6 pr-0 text-start text-xl-end d-none d-xl-block">
+                                                                        <span class="date">{{ blog.created|strf_time:' %d %B %Y' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /Side Panel -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

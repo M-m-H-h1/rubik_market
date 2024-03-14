@@ -1,0 +1,323 @@
+{% extends 'bace.html' %}
+{% load static %}
+{% load my_custom_filters %}
+{% load my_filters %}
+{% load ratings %}
+{% block title %}سبد خرید {% endblock %}
+{% block content %}
+    <section class="inner-page" id="cart-page">
+        <div class="container-fluid" id="page-hero">
+            <div class="row">
+                <div class="col-12">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 px-0">
+                                <h1>سبد خرید</h1>
+                                <p>مدیریت و خرید همزمان چند محصول</p>
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="index.html">صفحه نخست</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">سبد خرید</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-12 col-lg-9">
+                                <div id="cart-products">
+                                    <div class="container">
+                                        <div class="row">
+                                            {% if cart.cart %}
+                                                <div class="col-12 py-3">
+                                                    <div class="pb-3" id="return-to-shop">می‌خواهید محصولات دیگری اضافه
+                                                        کنید؟ <a href="{% url 'product:list_product' %}">بازگشت به
+                                                            فروشگاه</a></div>
+                                                    <div class="d-none d-md-block">
+                                                        <div class="row my-2" id="heading">
+                                                            <div class="col-4">
+                                                                <div>کالا</div>
+                                                            </div>
+                                                            <div class="col-2">
+                                                                <div>قیمت واحد</div>
+                                                            </div>
+
+                                                            <div class="col-2">
+                                                                <div>قیمت با احتساب تخفیف</div>
+                                                            </div>
+                                                            <div class="col-2 pl-4">
+                                                                <div>تعداد</div>
+                                                            </div>
+                                                            <div class="col-2 pr-0">
+                                                                <div class="pr-3">قیمت نهایی</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {% for item in cart %}
+
+                                                        {% if item.product.discount_percent %}
+                                                            <div class="row product">
+                                                                <div class="col-12 col-md-4">
+                                                                    <div class="row">
+                                                                        <div class="col-2 col-md-4 pl-0">
+                                                                            <a target="_blank"
+                                                                               href="{{ item.product.get_absolute_url }}"><img
+                                                                                    src="{{ item.product.images.first.image.url }}"
+                                                                                    alt=""></a>
+                                                                        </div>
+                                                                        <div class="col-10 col-md-8">
+                                                                            <a href="{{ item.product.get_absolute_url }}"
+                                                                               target="_blank">
+                                                                                <div class="title pt-2">
+                                                                                    {{ item.product.title }}
+                                                                                    {% if item.memory %}-(
+                                                                                        {{ item.memory }}
+                                                                                        ){% endif %}
+                                                                                    {% if item.color %}- (
+                                                                                        {{ item.color }}){% endif %}
+                                                                                </div>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6 col-md-2">
+                                                                    <div class="d-md-none font-weight-bold">قیمت</div>
+                                                                    <div class="pt-1"><span
+                                                                            class="product-encode4365gbf265g43d">{{ item.product.price|intcomma }}</span>
+                                                                        <span>تومان</span></div>
+                                                                </div>
+
+                                                                <div class="col-6 col-md-2">
+                                                                    <div class="d-md-none font-weight-bold">قیمت با
+                                                                        احتساب تخفیف
+                                                                    </div>
+                                                                    <div class="pt-1"><span
+                                                                            class="product-discount">{{ item.product.Price_after_discount|intcomma }}</span>
+                                                                        <span>تومان</span><br><span>{{ item.product.discount_percent }}% تخفیف </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6 col-md-2 pl-4 pr-0 pr-md-3">
+                                                                    <div class="d-md-none font-weight-bold">تعداد</div>
+                                                                    <div class="pt-1"><span
+                                                                            class="product-encode4365gbf265g43d">{{ item.quantity }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6 col-md-2 pr-0">
+                                                                    <div class="d-md-none font-weight-bold">قیمت نهایی
+                                                                    </div>
+                                                                    <div class="pt-1 pr-2 bg-light"><span
+                                                                            class="product-total">{{ item.total|price_format }}</span>
+                                                                        <span>تومان</span></div>
+                                                                    <a href="#"
+                                                                       class="product-remove btn-remove-from-basket"
+                                                                       data-id="">
+                                                                        <div class=" small pl-2"><a style="color: red"
+                                                                                                    href="{% url 'cart:cart_delete' item.unique_id %}"><i
+                                                                                class="fa fa-times"></i></a>
+                                                                            حذف
+                                                                        </div>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <hr>
+                                                        {% else %}
+                                                            <div class="row product">
+                                                                <div class="col-12 col-md-4">
+                                                                    <div class="row">
+                                                                        <div class="col-2 col-md-4 pl-0">
+                                                                            <a target="_blank"
+                                                                               href="{{ item.product.get_absolute_url }}"><img
+                                                                                    src="{{ item.product.images.first.image.url }}"
+                                                                                    alt=""></a>
+                                                                        </div>
+                                                                        <div class="col-10 col-md-8">
+                                                                            <a href="{{ item.product.get_absolute_url }}"
+                                                                               target="_blank">
+                                                                                <div class="title pt-2">
+                                                                                    {{ item.product.title }}
+                                                                                    {% if item.memory %}(
+                                                                                        {{ item.memory }})
+                                                                                    {% endif %}
+                                                                                    {% if item.color %}-(
+                                                                                        {{ item.color }}){% endif %}
+                                                                                </div>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6 col-md-2">
+                                                                    <div class="d-md-none font-weight-bold">قیمت</div>
+                                                                    <div class="pt-1"><span
+                                                                            class="product-encode4365gbf265g43d">{{ item.price|intcomma }}</span>
+                                                                        <span>تومان</span></div>
+                                                                </div>
+
+                                                                <div class="col-6 col-md-2">
+                                                                    <div class="d-md-none font-weight-bold">درصد تخفیف
+                                                                    </div>
+                                                                    <div class="pt-1"><span
+                                                                            class="product-discount">تخفیفی ندارد !</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6 col-md-2 pl-4 pr-0 pr-md-3">
+                                                                    <div class="d-md-none font-weight-bold">تعداد</div>
+                                                                    <div class="pt-1"><span
+                                                                            class="product-encode4365gbf265g43d">{{ item.quantity }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6 col-md-2 pr-0">
+                                                                    <div class="d-md-none font-weight-bold">قیمت نهایی
+                                                                    </div>
+                                                                    <div class="pt-1 pr-2 bg-light"><span
+                                                                            class="product-total">{{ item.total }}</span>
+                                                                        <span>تومان</span></div>
+                                                                    <a href="#"
+                                                                       class="product-remove btn-remove-from-basket"
+                                                                       data-id="">
+                                                                        <div class=" small pl-2"><a style="color: red"
+                                                                                                    href="{% url 'cart:cart_delete' item.unique_id %}"><i
+                                                                                class="fa fa-times"></i></a>
+                                                                            حذف
+                                                                        </div>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <hr>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                            {% else %}
+
+                                                <div style="padding: 30px" class="text-center">
+                                                    <h3>سبد خرید شما خالی میباشد</h3>
+                                                    <a href="{% url 'product:list_product' %}">
+                                                        <button style="margin: 30px" class="btn btn-warning">اضافه کردن
+                                                            محصول
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                                </div>
+                                            {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% if cart.cart %}
+                            <div class="col-12 col-lg-3 mt-2 mt-lg-0 pr-3 pr-lg-0">
+                                <div id="factor">
+                                    <div class="container">
+                                        <div class="row py-2">
+                                            <div class="col-6">
+                                                <div>جمع کل فاکتور:</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div><span
+                                                        id="factor-total-encode4365gbf265g43d">{{ cart.total_price|price_format }}</span>
+                                                    تومان
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row py-2 bg-light">
+                                            <div class="col-6">
+                                                <div>جمع تخفیف:</div>
+                                            </div>
+                                            <div class="col-6">
+                                                {% if cart.total_discount > 0 %}
+                                                    <div>
+                                                    <span
+                                                            id="factor-total-discount">{{ cart.total_discount|price_format }}</span>
+                                                        تومان
+                                                    </div>
+                                                {% else %}
+                                                    <div>
+                                                    <span
+                                                            id="factor-total-discount">بدون تخفیف !</span>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="row py-2" id="total">
+                                            <div class="col-6">
+                                                <div>مبلغ قابل پرداخت:</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div><span
+                                                        id="factor-total">{{ cart.final_price_total|price_format }}</span>
+                                                    تومان
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row py-2">
+                                            <div class="col-12">
+                                                <a href="{% url 'cart:order_creation' %}"><input
+                                                        type="submit"
+                                                        value="ادامه ثبت سفارش"
+                                                        class="btn btn-success w-100"></a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <!-- Suggested Products -->
+                        <div class="col-12 pt-5" id="suggested-products">
+                            <div class="title py-3 text-center">سایر محصولات پیشنهادی</div>
+                            <div class="owl-carousel products-carousel">
+                                {% for product in products|order_bya:'-views'|slice:'8' %}
+                                    <div class="encode4326654321vfb item">
+                                        <a id="" href="{{ product.get_absolute_url }}">
+                                            <div class="image"
+                                                 style="background-image: url('{{ product.images.first.image.url }}')"></div>
+                                        </a>
+                                        <div class="details p-3">
+                                            <div class="category">
+                                                <a href="{{ product.category.last.get_absolute_url }}">{{ product.category.last }}</a>
+                                                {% if product.mark %}
+                                                    &nbsp;/&nbsp;
+                                                    <a href="{{ product.mark.get_absolute_url }}">{{ product.mark }}</a>
+                                                {% endif %}
+                                            </div>
+                                            <a href="{{ product.get_absolute_url }}">
+                                                <h2>{{ product.title }}</h2></a>
+                                            {% if product.discount_percent %}
+                                                <div>
+                                                    <span class="discounted">{{ product.price }} تومان</span>
+                                                    <br class="d-sm-none">
+                                                    <span class="encode4365gbf265g43d">{{ product.Price_after_discount }} تومان</span>
+                                                </div>
+                                            {% else %}
+                                                <div class="encode4365gbf265g43d">{{ product.price }} تومان
+                                                </div>
+                                            {% endif %}
+
+                                            {% if product.discount_percent %}
+                                                <div class="badge span_persent fa-1x">{{ product.discount_percent }}%</div>
+                                            {% endif %}
+                                            <div class="rate">
+                                                {% ratings product read_only=True %}
+                                                <span class="encode43bf265g43d">(14 رای دهنده)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <!-- /Suggested Products -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+{% endblock %}

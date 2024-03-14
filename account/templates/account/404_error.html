@@ -1,0 +1,60 @@
+{% extends 'bace.html' %}
+{% load static %}
+{% block title %}صفحه مورد نظر یافت نشد!{% endblock %}
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/error-404.css' %}">
+    <section class="inner-page" id="contact-page">
+    <div class="container-fluid" id="page-hero">
+        <div class="row">
+            <div class="col-12">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 px-0">
+                            <h1>صفحه مورد نظر یافت نشد!</h1>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="content">
+                    <div class="row">
+                        <div class="col-12">
+                            <div id="notfound">
+                                <div class="notfound-bg">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                                <div class="notfound">
+                                    <div class="notfound-404">
+                                        <h1>404</h1>
+                                    </div>
+                                    <h2>صفحه مورد نظر یافت نشد!</h2>
+                                    <p>اگر رمز عبور خود را فراموش کرده اید به لینک زیر بروید</p>
+                                    <div style="display: inline">
+                                        <a href="{% url 'account:password_recovery' %}">فراموشی رمز عبور</a>
+                                    <a href="{% url 'home:main' %}">خانه</a>
+                                    </div>
+                                    <div class="notfound-social">
+                                        <a href="#"><img src="{% static 'images/social/twitter.png' %}" alt="توئیتر" width="18px"></a>
+                                        <a href="#"><img src="{% static 'images/social/insta.png' %}" alt="اینستاگرام" width="18px"></a>
+                                        <a href="#"><img src="{% static 'images/social/linkedin.png' %}" alt="لینکدین" width="18px"></a>
+                                        <a href="#"><img src="{% static 'images/social/facebook.png' %}" alt="فیس بوک" width="18px"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

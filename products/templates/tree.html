@@ -1,0 +1,31 @@
+{% extends 'bace.html' %}
+{% load static %}
+{% block title %}فروشگاه{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/tree.css' %}">
+
+<div dir="ltr" class="tree">
+	<ul>
+  <li>
+    <a href="{% url 'home:main' %}">فروشگاه</a>
+    <ul>
+    <li>
+      <a href="">مارک ها</a><ul>{% for mark in marks %}<li><a href="{{ mark.get_absolute_url }}">{{ mark.name }}</a></li>{% endfor %}</ul></li>{% for group in group_categories %}<li>
+        <a href="#">{{ group.name }}</a>
+        <ul>
+            {% for t_cat in group.categorytitles.all %}<li>
+            <a href="#">{{ t_cat.name }}</a>
+            <ul>
+                {% for cat in t_cat.tilte_cat.all %}<li>
+                <a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a>
+              </li>{% endfor %}
+            </ul>
+          </li>{% endfor %}
+        </ul>
+      </li>{% endfor %}
+    </ul>
+  </li>
+</ul></div>
+
+
+{% endblock %}
